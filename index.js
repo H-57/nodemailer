@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import renderRoutes from "./routes/render.js"
 import postRoutes from "./routes/postReq.js"
 import cookieParser from "cookie-parser";
+import path from "path";
 const app=express();
 
 
