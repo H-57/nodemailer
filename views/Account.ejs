@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %>
+
+<body>
+    <%- include('./partials/navbar.ejs') %>
+    <%- include('./partials/banner.ejs') %>
+<h1 class="text-center text-2xl font-bold mt-5 text-white capitalize">for documentation for get app password 
+  <a class="text-blue-500" href="https://support.google.com/accounts/answer/185833?hl=en" target="_blank" >click here</a> </h1>
+
+    <form class="md:w-[60%] m-auto mt-5 border p-10" onsubmit="handelForm(event)" >
+        <div class="mb-6">
+          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
+          <input type="text" id="name" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter your name" required>
+        </div>
+        <div class="mb-6">
+          <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+          <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@gmail.com" required>
+        </div>
+        <div class="mb-6">
+          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your App password</label>
+          <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required placeholder="12345678912345">
+        </div>
+       
+<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload resume</label>
+<input name="resume" class="block w-full p-2 mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" required>
+
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+      </form>
+      
+
+  <script>
+const handelForm=()=>{
+  event.preventDefault();
+  const name=document.getElementById("name").value;
+  const email=document.getElementById("email").value;
+  const password=document.getElementById("password").value;
+  const resume=document.getElementById("file_input").files[0];
+  const formdata=new FormData();
+  formdata.append("name",name);
+  formdata.append("email",email);
+  formdata.append("password",password);
+  formdata.append("resume",resume);
+  fetch("/Account",{
+    method:"POST",
+    body:formdata
+  }).then((res)=>res.json()).then((data)=>{
+    console.log(data);
+    ShowToast(data)
+    
+    
+    if(data.success){
+      if(!localStorage.getItem("resumes")){
+
+        localStorage.setItem("resumes", JSON.stringify([]));
+      }
+    const existingResumes = JSON.parse(localStorage.getItem("resumes")) || [];
+  const newResume = { name: resume.name, url: data.url };
+  const updatedResumes = [...existingResumes, newResume];
+
+  localStorage.setItem("resumes", JSON.stringify(updatedResumes));
+    }
+ 
+  })
+}
+  </script>
+</body>
+</html>

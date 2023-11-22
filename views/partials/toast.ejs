@@ -1,0 +1,32 @@
+<script>
+  const ShowToast=(data)=>{
+
+  
+// Display the response in an alert
+let color="linear-gradient(to right, #06ff06, green)"
+
+if(data.success==false){
+  
+  color ="linear-gradient(to right, #bf3131, tomato)"
+}
+Toastify({
+text: data.message,
+duration: 3000,
+// destination: "https://github.com/apvarun/toastify-js",
+// newWindow: true,
+close: true,
+gravity: "top", // `top` or `bottom`
+position: "center", // `left`, `center` or `right`
+stopOnFocus: true, // Prevents dismissing of toast on hover
+style: {
+background: color,
+
+},
+offset: {
+x: 50, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+y: 10 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+},
+onClick: function(){} // Callback after click
+}).showToast();
+  }
+</script>
