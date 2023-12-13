@@ -10,18 +10,38 @@
         }
     </style>
     <script>
-if(!localStorage.getItem('name')||!localStorage.getItem('email')||!localStorage.getItem('password')&& document.cookies.email&& document.cookie.password&& document.cookie.name){
-    localStorage.setItem('name',document.cookie.name);
-    localStorage.setItem('email',document.cookie.email);
-    localStorage.setItem('password',document.cookie.password);
-}
-if(localStorage.getItem('name')&& localStorage.getItem('email')&& localStorage.getItem('password')&& !document.cookies.email && !document.cookie.password&& !document.cookie.name){
-    document.cookie=`name=${localStorage.getItem('name')}`;
-    document.cookie=`email=${localStorage.getItem('email')}`;
-    document.cookie=`password=${localStorage.getItem('password')}`;
-}
-    
+if (!localStorage.getItem('name') || !localStorage.getItem('email') || !localStorage.getItem('password')) {
+    if (document.cookie.includes('email') && document.cookie.includes('password') && document.cookie.includes('name')) {
+        // Extract values from cookies and store in localStorage
+        const nameValue = getCookieValue('name');
+        const emailValue = getCookieValue('email');
+        const passwordValue = getCookieValue('password');
 
+        localStorage.setItem('name', nameValue);
+        localStorage.setItem('email', emailValue);
+        localStorage.setItem('password', passwordValue);
+    }
+}
+
+if (localStorage.getItem('name') && localStorage.getItem('email') && localStorage.getItem('password') &&
+    !document.cookie.includes('email') && !document.cookie.includes('password') && !document.cookie.includes('name')) {
+    // Set cookies with values from localStorage
+    document.cookie = `name=${localStorage.getItem('name')}`;
+    document.cookie = `email=${localStorage.getItem('email')}`;
+    document.cookie = `password=${localStorage.getItem('password')}`;
+}
+
+// Helper function to get cookie value by name
+function getCookieValue(cookieName) {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name === cookieName) {
+            return value;
+        }
+    }
+    return null;
+}
 
     </script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
