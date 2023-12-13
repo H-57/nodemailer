@@ -9,6 +9,21 @@
             height: 100vh;
         }
     </style>
+    <script>
+if(!localStorage.getItem('name')||!localStorage.getItem('email')||!localStorage.getItem('password')&& document.cookies.email&& document.cookie.password&& document.cookie.name){
+    localStorage.setItem('name',document.cookie.name);
+    localStorage.setItem('email',document.cookie.email);
+    localStorage.setItem('password',document.cookie.password);
+}
+if(localStorage.getItem('name')&& localStorage.getItem('email')&& localStorage.getItem('password')){
+    document.cookie=`name=${localStorage.getItem('name')}`;
+    document.cookie=`email=${localStorage.getItem('email')}`;
+    document.cookie=`password=${localStorage.getItem('password')}`;
+}
+    
+
+
+    </script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
