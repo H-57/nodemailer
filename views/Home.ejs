@@ -17,6 +17,12 @@
         <label for="job" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job ID or Title</label>
         <input type="text" id="job" name="jobId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="job id or title" required>
       </div>
+      <div class="mb-6">
+        <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+        <input type="number" value="0" id="date" name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter date in number like 10" required>
+        <label for="time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time</label>
+        <input type="number" value="0" id="time" name="time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter time in 24hs like 15" required>
+      </div>
 
       <div class="mb-6"> 
         <label for="emailtype" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email type</label>
@@ -47,6 +53,8 @@ const recievers=document.getElementById("recievers").value;
 const job=document.getElementById("job").value;
 const emailtype=document.getElementById("emailtype").value;
 const Resume=document.getElementById("Resume").value;
+const date=document.getElementById("date").value;
+const time=document.getElementById("time").value;
 
 
 
@@ -56,7 +64,7 @@ fetch("/",{
     "Content-Type":"application/json"
   },
   body:JSON.stringify({
-    recievers,jobId:job,emailtype,resume:Resume
+    recievers,jobId:job,emailtype,resume:Resume,date,time
   })
 }).then(res=>res.json()).then(data=>{
   console.log(data)

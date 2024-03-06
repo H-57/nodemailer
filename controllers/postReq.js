@@ -1,6 +1,7 @@
 import { fileUpload } from "../cloudnary/fileUpload.js";
 import SENDMAIL from "../mail/mailer.js";
 import { mailGenerator } from "../mail/mailGenerator.js";
+import CronEmail from "../model/email.js";
 //for upload resume 
 export const resumeUpload= async(req,res)=>{
     try {
@@ -59,10 +60,14 @@ export const emails=async(req,res)=>{
     try {
         const{email,password,name}=await req.cookies
        
-        const {recievers,jobId,emailtype,resume}=await req.body
+        const {recievers,jobId,emailtype,resume,date,time}=await req.body
     
       if(!recievers || !jobId  || !emailtype || !resume){
           return res.status(400).json({message:"Please fill all the fields",success:false})
+      }
+      if(date > 0 || time > 0){
+          await CronEmail.create({email,password,name,jobId,emailtype,recievers,resume,date,time})
+          return res.status(400).json({message:"Your email is sheduled",success:true})
       }
    const Mail= await mailGenerator(name,jobId,emailtype);
     const response=await SENDMAIL(email,password,recievers.split(","),Mail.subject,Mail.message,`resume-${Date.now()}.pdf`,resume)
