@@ -10,7 +10,7 @@ export async function cronjobs(req,res){
     try {
         const Times=await(await fetch(`https://timeapi.io/api/Time/current/zone?timeZone=Asia/Kolkata`)).json()
 
-        const emails=await CronEmail.find({ date: Times.day, time: { $lte: Times.hour }, send: false })
+        const emails=await CronEmail.find({ date: { $lte: Times.day }, time: { $lte: Times.hour }, send: false })
         emails.forEach(async(user)=>{
             const Mail= await mailGenerator(user.name,user.jobId,user.emailtype);
             const response=await SENDMAIL(user.email,user.password,user.recievers.split(","),Mail.subject,Mail.message,`resume-${Date.now()}.pdf`,user.resume)
