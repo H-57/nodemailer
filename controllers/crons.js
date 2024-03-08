@@ -8,20 +8,21 @@ export async function cronjobs(req,res){
         return res.status(400).send('Unauthorized');
     }
     try {
-        const Times=await(await fetch(`https://timeapi.io/api/Time/current/zone?timeZone=Asia/Kolkata`)).json()
+        const Times = await (await fetch(`https://timeapi.io/api/Time/current/zone?timeZone=Asia/Kolkata`)).json();
 
-        const emails=await CronEmail.find({ date: { $lte: Times.day }, time: { $lte: Times.hour }, send: false })
-        emails.forEach(async(user)=>{
-            const Mail= await mailGenerator(user.name,user.jobId,user.emailtype);
-            const response=await SENDMAIL(user.email,user.password,user.recievers.split(","),Mail.subject,Mail.message,`resume-${Date.now()}.pdf`,user.resume)
-            if(response)await CronEmail.findByIdAndUpdate(user._id,{send:true})
-        })
-        
-           
-            res.json({
-                Time:Times,
-                success:true
-            })
+const emails = await CronEmail.find({ date: { $lte: Times.day }, time: { $lte: Times.hour }, send: false });
+
+await Promise.all(emails.map(async (user) => {
+    const Mail = await mailGenerator(user.name, user.jobId, user.emailtype);
+    const response = await SENDMAIL(user.email, user.password, user.recievers.split(","), Mail.subject, Mail.message, `resume-${Date.now()}.pdf`, user.resume);
+    if (response) await CronEmail.findByIdAndUpdate(user._id, { send: true });
+}));
+
+res.json({
+    Time: Times,
+    success: true
+});
+
     } catch (error) {
         
     }
