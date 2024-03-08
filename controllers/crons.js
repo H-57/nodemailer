@@ -24,7 +24,10 @@ res.json({
 });
 
     } catch (error) {
-        
+        res.status(400).json({
+            message: error,
+            success: false
+        });
     }
   
 }
